@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  
+  body {
+    background-color: #070401;
+    color: #d4c9b8;
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0e0702; }
+  ::-webkit-scrollbar-thumb { background: #4a2e14; border-radius: 3px; }
+
+  ::selection { background: rgba(220, 38, 38, 0.35); color: #f0ece4; }
+}
+
+@layer components {
+  .cave-btn {
+    @apply border border-cave-400/40 bg-cave-800/60 text-cave-100 px-4 py-2 
+           font-mono text-sm transition-all duration-200 
+           hover:border-blood-500/60 hover:bg-cave-700/80 hover:text-white
+           active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed;
+  }
+
+  .hud-panel {
+    @apply border border-cave-500/30 bg-cave-900/80 backdrop-blur-sm p-3 rounded;
+  }
+
+  .narrator-text {
+    @apply font-gothic text-cave-100/90 text-sm leading-relaxed italic;
+  }
+
+  .room-node {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .glitch-text {
+    position: relative;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 #dc2626;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+
+  .glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 #1e40af;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+  5% { clip: rect(70px, 9999px, 71px, 0); transform: skew(0.06deg); }
+  10% { clip: rect(29px, 9999px, 83px, 0); transform: skew(0.31deg); }
+  50% { clip: rect(12px, 9999px, 26px, 0); transform: skew(0.42deg); }
+  100% { clip: rect(56px, 9999px, 32px, 0); transform: skew(0.15deg); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.35deg); }
+  5% { clip: rect(52px, 9999px, 74px, 0); transform: skew(0.91deg); }
+  10% { clip: rect(79px, 9999px, 88px, 0); transform: skew(0.14deg); }
+  50% { clip: rect(92px, 9999px, 19px, 0); transform: skew(0.62deg); }
+  100% { clip: rect(9px, 9999px, 48px, 0); transform: skew(0.45deg); }
+}
+
+/* Sanity blur effect */
+.sanity-low { filter: blur(0.3px) brightness(0.9); }
+.sanity-critical {
+  filter: blur(0.8px) brightness(0.8) hue-rotate(10deg);
+  animation: dim 3s ease-in-out infinite;
+}
+
+/* Torch flicker ambient */
+.torch-flicker {
+  animation: flicker 3s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.6; }
+  94% { opacity: 1; }
+  96% { opacity: 0.7; }
+  97% { opacity: 1; }
+}
+
+/* Wumpus pulse when near */
+.wumpus-near {
+  animation: pulse-red 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+  50% { box-shadow: 0 0 25px 8px rgba(220,38,38,0.3); }
+}
+
+/* Node styles on map */
+.map-node-player { fill: #22c55e; stroke: #16a34a; stroke-width: 2; }
+.map-node-visited { fill: #4a2e14; stroke: #6b4a2e; stroke-width: 1; }
+.map-node-unknown { fill: #0e0702; stroke: #2e1a08; stroke-width: 1; }
+.map-node-pit { fill: #1e3a8a; stroke: #1e40af; stroke-width: 1.5; }
+.map-node-bat { fill: #78350f; stroke: #92400e; stroke-width: 1.5; }
+.map-node-wumpus { fill: #7c2d12; stroke: #c2410c; stroke-width: 2; }
+.map-node-powerup { fill: #4c1d95; stroke: #7c3aed; stroke-width: 1.5; }
+.map-node-neighbor { fill: #1a0e04; stroke: #6b4a2e; stroke-width: 1.5; }
