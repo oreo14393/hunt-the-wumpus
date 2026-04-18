@@ -4,6 +4,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const authRoutes = require('./routes/auth');
@@ -171,14 +172,22 @@ wss.on('connection', (ws) => {
   ws.on('error', (err) => console.error('[WS] Error:', err.message));
 });
 
-// ─── DATABASE ─────────────────────────────────────────────────
+// ─── SERVE REACT FRONTEND (Production) ───────────────────────
+const clientBuildPath = path.join(__dirname, '../client/build');
+app.use(express.static(clientBuildPath));
+
+// Catch-all: send React app for any non-API route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
+
+// ─── DATABASE + START SERVER ──────────────────────────────────
 const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/wumpus_game';
 
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('[DB] MongoDB connected');
-    
     server.listen(PORT, () => {
       console.log(`[Server] Running on http://localhost:${PORT}`);
       console.log(`[WS] WebSocket on ws://localhost:${PORT}/ws`);
