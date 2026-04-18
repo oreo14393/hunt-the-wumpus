@@ -1,4 +1,4 @@
-# WUMPUS — Into the Dark
+# HUNT THE WUMPUS 
 ### A Psychological Horror Cave Exploration Game
 
 ---
