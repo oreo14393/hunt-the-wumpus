@@ -1,4 +1,7 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+const WS_URL = process.env.REACT_APP_WS_URL ||
+  (window.location.protocol === 'https:'
+    ? `wss://${window.location.host}/ws`
+    : `ws://${window.location.host}/ws`);
 
 const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost:4000/ws';
 
