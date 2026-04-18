@@ -178,6 +178,15 @@ const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/wumpus_g
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('[DB] MongoDB connected');
+    const path = require('path');
+
+    // Serve React frontend
+    app.use(express.static(path.join(__dirname, '../client/build')));
+    // Handle React routing — must be LAST route
+    app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    });
+    
     server.listen(PORT, () => {
       console.log(`[Server] Running on http://localhost:${PORT}`);
       console.log(`[WS] WebSocket on ws://localhost:${PORT}/ws`);
